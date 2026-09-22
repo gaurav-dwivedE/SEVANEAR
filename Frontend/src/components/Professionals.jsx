@@ -6,6 +6,7 @@ import {
   BadgeCheck,
   ArrowRight,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const professionals = [
   {
@@ -88,11 +89,8 @@ const Professionals = () => {
           ))}
         </div>
 
-        {/* Mobile View All */}
-        <button className="mx-auto mt-7 flex items-center gap-1.5 text-sm font-bold text-blue-600 sm:hidden">
-          View All Services
-          <ArrowRight size={17} />
-        </button>
+       
+       
       </div>
     </section>
   );
@@ -196,9 +194,12 @@ const ProfessionalCard = ({ professional }) => {
         </div>
 
         {/* Book Button */}
-        <button className="mt-4 flex h-10 w-full items-center justify-center rounded-lg bg-blue-600 text-xs font-bold text-white transition hover:bg-blue-700 active:scale-[0.98]">
+        <NavLink
+          to="/applications"
+          className="mt-4 flex h-10 w-full items-center justify-center rounded-lg bg-blue-600 text-xs font-bold text-white transition hover:bg-blue-700 active:scale-[0.98]"
+        >
           Book Now
-        </button>
+        </NavLink>
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ const Hero = () => {
           {/* Hero Image */}
           <img
             src="/images/hero-service.png"
-            alt="SevaNear local service professional"
+            alt="SevaNear local service professional image ...."
             className="absolute right-0 top-0 h-full w-full object-cover sm:w-[65%]"
           />
 

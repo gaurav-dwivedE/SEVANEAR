@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   MapPin,
   Menu,
@@ -83,47 +84,26 @@ export default function Navbar() {
               );
             }}
           >
-            <MapPin
-              size={21}
-              strokeWidth={2.3}
-              className="shrink-0 text-blue-500"
-            />
+           
 
-            <div className="min-w-0">
-              <div className="text-[10px] font-medium uppercase tracking-wide text-gray-400">
-                Location
-              </div>
-
-              <div className="flex items-center gap-1">
-                <span
-                  className={`max-w-[110px] truncate text-sm font-semibold ${
-                    location ? "text-gray-800" : "text-gray-500"
-                  }`}
-                >
-                  {location || "Select location"}
-                </span>
-
-                <ChevronDown
-                  size={14}
-                  className="text-gray-400"
-                />
-              </div>
-            </div>
+           
           </button>
 
           {/* Login */}
-          <button
+          <NavLink
+            to="/login"
             className="rounded-lg border border-blue-500 bg-white px-5 py-2.5 text-sm font-semibold text-blue-500 transition hover:bg-blue-50"
           >
             Login
-          </button>
+          </NavLink>
 
           {/* Signup */}
-          <button
+          <NavLink
+            to="/signup"
             className="rounded-lg bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600"
           >
             Sign up
-          </button>
+          </NavLink>
         </div>
 
         {/* Mobile Menu Button */}
