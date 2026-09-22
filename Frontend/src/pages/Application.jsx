@@ -11,6 +11,7 @@ import {
   Info,
   LoaderCircle,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const services = [
   "Plumbing",
@@ -262,14 +263,14 @@ const Application = () => {
                   </p>
                 )}
 
-                <a
-                  href="/addresses"
+                <NavLink
+                  to="/addresses"
                   className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700"
                 >
                   <MapPin size={15} />
                   Manage saved addresses
                   <ChevronRight size={15} />
-                </a>
+                </NavLink>
               </div>
 
               {/* Additional Details */}
