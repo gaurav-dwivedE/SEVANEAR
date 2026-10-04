@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="SevaNear service">
+  <rect width="800" height="600" fill="#f1f1f1"/>
+  <g fill="none" stroke="#9a9a9a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M290 330l110-96 110 96"/>
+    <path d="M318 312v100h164V312"/>
+    <path d="M375 412v-56h50v56"/>
+  </g>
+  <text x="400" y="480" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="600" fill="#8c8c8c">SevaNear</text>
+</svg>

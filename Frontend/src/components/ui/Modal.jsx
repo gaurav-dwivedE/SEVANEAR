@@ -1,11 +1,10 @@
 import { useEffect } from "react";
+import Icon from "./Icon";
 
 export default function Modal({ open, onClose, title, children, wide = false }) {
   useEffect(() => {
     if (!open) return undefined;
-    function onKey(e) {
-      if (e.key === "Escape") onClose();
-    }
+    const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
@@ -13,25 +12,15 @@ export default function Modal({ open, onClose, title, children, wide = false }) 
       document.body.style.overflow = "";
     };
   }, [open, onClose]);
-
   if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm" onClick={onClose} />
-      <div
-        className={`card-surface relative max-h-[88vh] w-full overflow-y-auto bg-ink-900 p-7 md:p-9 ${
-          wide ? "max-w-2xl" : "max-w-md"
-        }`}
-      >
-        <div className="mb-6 flex items-center justify-between">
+    <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={title}>
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className={`fade-up relative max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-white p-5 shadow-2xl sm:rounded-xl sm:p-7 ${wide ? "sm:max-w-2xl" : "sm:max-w-md"}`}>
+        <div className="mb-5 flex items-center justify-between">
           <h3 className="font-display text-2xl text-ivory-50">{title}</h3>
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-ivory-100/15 text-ivory-200/60 hover:text-ivory-50"
-            aria-label="Close"
-          >
-            ×
+          <button onClick={onClose} className="grid h-9 w-9 place-items-center rounded-full hover:bg-ink-700" aria-label="Close">
+            <Icon name="x" size={18} />
           </button>
         </div>
         {children}

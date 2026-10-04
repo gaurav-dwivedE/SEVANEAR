@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
+    pincode: { type: String, default: "" },
+    city: { type: String, default: "" },
+    isBlocked: { type: Boolean, default: false },
     address: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",

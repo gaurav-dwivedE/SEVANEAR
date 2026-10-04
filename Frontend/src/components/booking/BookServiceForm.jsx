@@ -1,227 +1,122 @@
 import { useEffect, useState } from "react";
-import { addressesApi, applicationsApi, getErrorMessage } from "../../lib/api";
+import Calendar from "../ui/Calendar";
+import AddressForm from "../ui/AddressForm";
 import FormMessage from "../ui/FormMessage";
-import { SLOTS, isoDay, fmtDate, rupee, VISIT_FEE, platformFee, total } from "../../lib/format";
+import { addressesApi, applicationsApi, servicesApi, getErrorMessage } from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
+import { SLOTS, fmtDate, rupee, VISIT_FEE, platformFee, total } from "../../lib/format";
 
-const emptyAddress = { street: "", city: "", state: "", zipCode: "", mobile: "", belongsTo: "user" };
+const today = () => new Date().toISOString().slice(0, 10);
 
 export default function BookServiceForm({ service, onSuccess }) {
-  const [addresses, setAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState("");
-  const [addingAddress, setAddingAddress] = useState(false);
-  const [newAddress, setNewAddress] = useState(emptyAddress);
-  const [details, setDetails] = useState("");
-  const [date, setDate] = useState(isoDay(0));
+  const { user } = useAuth();
+  const [step, setStep] = useState(1);
+  const [date, setDate] = useState("");
   const [slot, setSlot] = useState("");
-  const [loadingAddresses, setLoadingAddresses] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+  const [addrId, setAddrId] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [avail, setAvail] = useState(null);
+  const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    let ignore = false;
-    addressesApi
-      .list()
-      .then(({ data }) => {
-        if (ignore) return;
-        const list = data.data || [];
-        setAddresses(list);
-        if (list.length) setSelectedAddress(list[0]._id);
-        else setAddingAddress(true);
-      })
-      .catch(() => setAddingAddress(true))
-      .finally(() => !ignore && setLoadingAddresses(false));
-    return () => {
-      ignore = true;
-    };
+    addressesApi.list().then(({ data }) => {
+      setAddresses(data.data || []);
+      setAddrId(data.data?.[0]?._id || "");
+      if (!data.data?.length) setAdding(true);
+    });
   }, []);
 
-  async function handleAddAddress(e) {
-    e.preventDefault();
-    setError("");
+  const addr = addresses.find((a) => a._id === addrId);
+  useEffect(() => {
+    if (!addr) return setAvail(null);
+    setAvail(null);
+    servicesApi.get(service._id, { pincode: addr.zipCode }).then(({ data }) => setAvail(data.data.availableAtPincode)).catch(() => setAvail(null));
+  }, [addrId, addresses.length]);
+
+  async function confirm() {
+    setError(""); setBusy(true);
     try {
-      const { data } = await addressesApi.create(newAddress);
-      setAddresses((prev) => [data.data, ...prev]);
-      setSelectedAddress(data.data._id);
-      setAddingAddress(false);
-      setNewAddress(emptyAddress);
-    } catch (err) {
-      setError(getErrorMessage(err, "Could not save that address."));
-    }
+      await applicationsApi.create({ service: service._id, selectedAddress: addrId, additionalDetails: notes, scheduledDate: date, timeSlot: slot });
+      onSuccess();
+    } catch (e) { setError(getErrorMessage(e)); }
+    finally { setBusy(false); }
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
-    if (!slot) {
-      setError("Please choose a time slot.");
-      return;
-    }
-    if (!selectedAddress) {
-      setError("Please select or add an address first.");
-      return;
-    }
-    setSubmitting(true);
-    try {
-      await applicationsApi.create({
-        service: service._id,
-        selectedAddress,
-        additionalDetails: details,
-        scheduledDate: date,
-        timeSlot: slot,
-      });
-      onSuccess?.();
-    } catch (err) {
-      setError(getErrorMessage(err, "Could not submit your booking."));
-    } finally {
-      setSubmitting(false);
-    }
-  }
+  const Steps = () => (
+    <ol className="mb-5 flex gap-1.5" aria-label="Progress">
+      {["Date & time", "Address", "Review"].map((l, i) => (
+        <li key={l} className="flex-1"><div className={`h-1 rounded-full ${i < step ? "bg-black" : "bg-ink-700"}`} /><span className={`mt-1 block text-[11px] ${i + 1 === step ? "font-semibold" : "text-ivory-200"}`}>{l}</span></li>
+      ))}
+    </ol>
+  );
 
-  if (loadingAddresses) {
-    return <p className="text-sm text-ivory-200/50">Loading your addresses…</p>;
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="card-surface bg-ink-950/40 p-4">
-        <p className="text-xs uppercase tracking-[0.18em] text-ivory-200/45">Booking</p>
-        <p className="mt-1 font-display text-xl text-ivory-50">{service.name}</p>
-        
-      </div>
-
-      <div>
-        <label className="label-field">When should we come?</label>
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {[0, 1, 2, 3, 4, 5, 6].map((o) => (
-            <button type="button" key={o} onClick={() => setDate(isoDay(o))}
-              className={`shrink-0 rounded-xl border px-3 py-2 text-sm ${date === isoDay(o) ? "border-moss-600 bg-moss-600 text-white" : "border-ink-600 bg-ink-800"}`}>
-              {o === 0 ? "Today" : o === 1 ? "Tomorrow" : fmtDate(isoDay(o))}
-            </button>
-          ))}
-        </div>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          {SLOTS.map((s) => (
-            <button type="button" key={s.v} onClick={() => setSlot(s.v)}
-              className={`rounded-xl border px-3 py-2 text-sm ${slot === s.v ? "border-moss-600 bg-black/5 font-semibold" : "border-ink-600 bg-ink-800"}`}>
-              {s.l}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {!addingAddress && (
+  if (step === 1)
+    return (
+      <div className="space-y-4"><Steps />
+        <Calendar value={date} onChange={setDate} />
         <div>
-          <label className="label-field">Service address</label>
-          <div className="space-y-2">
-            {addresses.map((addr) => (
-              <label
-                key={addr._id}
-                className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm transition-colors ${
-                  selectedAddress === addr._id
-                    ? "border-black bg-black/5"
-                    : "border-ivory-100/10 hover:border-ivory-100/25"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="address"
-                  className="mt-1"
-                  checked={selectedAddress === addr._id}
-                  onChange={() => setSelectedAddress(addr._id)}
-                />
-                <span className="text-ivory-200/75">
-                  {addr.street}, {addr.city}, {addr.state} — {addr.zipCode}
-                </span>
-              </label>
+          <label className="label-field">Time slot</label>
+          <div className="grid grid-cols-2 gap-2">
+            {SLOTS.map((s) => (
+              <button type="button" key={s.v} onClick={() => setSlot(s.v)} className={`rounded-xl border px-3 py-2.5 text-sm ${slot === s.v ? "border-black bg-black text-white" : "border-ink-600 hover:border-black"}`}>{s.l}</button>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => setAddingAddress(true)}
-            className="mt-3 text-sm text-clay-400 hover:text-clay-500"
-          >
-            + Add a new address
-          </button>
         </div>
-      )}
-
-      {addingAddress && (
-        <div className="space-y-3 rounded-xl border border-ivory-100/10 p-4">
-          <p className="text-xs uppercase tracking-[0.18em] text-ivory-200/45">New address</p>
-          <input
-            className="input-field"
-            placeholder="Street / house no."
-            value={newAddress.street}
-            onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              className="input-field"
-              placeholder="City"
-              value={newAddress.city}
-              onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-            />
-            <input
-              className="input-field"
-              placeholder="State"
-              value={newAddress.state}
-              onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              className="input-field"
-              placeholder="PIN code"
-              value={newAddress.zipCode}
-              onChange={(e) => setNewAddress({ ...newAddress, zipCode: e.target.value })}
-            />
-            <input
-              className="input-field"
-              placeholder="Mobile (optional)"
-              value={newAddress.mobile}
-              onChange={(e) => setNewAddress({ ...newAddress, mobile: e.target.value })}
-            />
-          </div>
-          <div className="flex gap-3 pt-1">
-            <button type="button" onClick={handleAddAddress} className="btn-primary !py-2 text-xs">
-              Save address
-            </button>
-            {addresses.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setAddingAddress(false)}
-                className="btn-ghost !py-2 text-xs"
-              >
-                Cancel
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div>
-        <label className="label-field">Additional details (optional)</label>
-        <textarea
-          className="input-field min-h-[90px] resize-none"
-          placeholder="Anything the partner should know?"
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-        />
+        <button className="btn-primary w-full" disabled={!date || !slot} onClick={() => setStep(2)}>Continue</button>
       </div>
+    );
 
-      <div className="card-surface p-4 text-sm">
-        <div className="flex justify-between"><span>{service.name} (from)</span><span>{rupee(service.startingPrice)}</span></div>
+  if (step === 2)
+    return (
+      <div className="space-y-4"><Steps />
+        {adding ? (
+          <AddressForm defaultName={user?.name} defaultPin={user?.pincode} onCancel={addresses.length ? () => setAdding(false) : undefined}
+            onSaved={(a) => { setAddresses((l) => [a, ...l]); setAddrId(a._id); setAdding(false); }} />
+        ) : (
+          <>
+            <div className="space-y-2">
+              {addresses.map((a) => (
+                <label key={a._id} className={`flex cursor-pointer gap-3 rounded-xl border p-3 text-sm ${addrId === a._id ? "border-black bg-ink-900" : "border-ink-600"}`}>
+                  <input type="radio" className="mt-1 accent-black" checked={addrId === a._id} onChange={() => setAddrId(a._id)} />
+                  <span><b>{a.label}</b> · {a.mobile}<br />{[a.houseNo, a.street, a.landmark].filter(Boolean).join(", ")}<br />{a.city}, {a.state} {a.zipCode}</span>
+                </label>
+              ))}
+            </div>
+            <button className="text-sm font-semibold underline underline-offset-4" onClick={() => setAdding(true)}>+ Add new address</button>
+            {avail === false && <FormMessage>{service.name} isn't available at {addr?.zipCode} yet. Choose another address.</FormMessage>}
+            <div className="flex gap-3">
+              <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
+              <button className="btn-primary flex-1" disabled={!addrId || avail === false} onClick={() => setStep(3)}>Review booking</button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+
+  return (
+    <div className="space-y-4"><Steps />
+      <div className="rounded-xl border border-ink-600 p-4 text-sm">
+        <p className="font-semibold">{service.name}</p>
+        <p className="text-ivory-200">{fmtDate(date)} · {SLOTS.find((s) => s.v === slot)?.l}</p>
+        <p className="text-ivory-200">{addr && `${addr.street}, ${addr.city} ${addr.zipCode} · ${addr.mobile}`}</p>
+      </div>
+      <div><label className="label-field">Notes for the partner <span className="font-normal text-ivory-200">(optional)</span></label>
+        <textarea className="input-field" rows={2} maxLength={1000} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Gate code, floor, what's wrong…" /></div>
+      <div className="rounded-xl bg-ink-900 p-4 text-sm">
+        <div className="flex justify-between"><span>Starting price</span><span>{rupee(service.startingPrice)}</span></div>
         <div className="flex justify-between text-ivory-200"><span>Visit fee</span><span>{rupee(VISIT_FEE)}</span></div>
         <div className="flex justify-between text-ivory-200"><span>Platform fee</span><span>{rupee(platformFee(service.startingPrice))}</span></div>
         <div className="mt-2 flex justify-between border-t border-dashed border-ink-600 pt-2 font-bold"><span>Estimated total</span><span>{rupee(total(service.startingPrice))}</span></div>
-        <p className="mt-2 text-xs text-ivory-200">Pay the partner after the job is done. Final price is confirmed before work starts.</p>
+        <p className="mt-2 text-xs text-ivory-200">Pay the partner after the job. Parts are quoted and agreed before work starts.</p>
       </div>
-
       <FormMessage>{error}</FormMessage>
-
-      <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60">
-        {submitting ? "Submitting…" : "Confirm booking"}
-      </button>
-    </form>
+      <div className="flex gap-3">
+        <button className="btn-ghost" onClick={() => setStep(2)}>Back</button>
+        <button className="btn-primary flex-1" disabled={busy} onClick={confirm}>{busy ? "Booking…" : "Confirm booking"}</button>
+      </div>
+    </div>
   );
 }

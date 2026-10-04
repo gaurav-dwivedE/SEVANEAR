@@ -56,6 +56,10 @@ export function AuthProvider({ children }) {
     }
   }
 
+  function updateUser(patch) {
+    setUser((u) => (u ? { ...u, ...patch } : u));
+  }
+
   function logout() {
     localStorage.removeItem("sevanear_token");
     setToken(null);
@@ -72,6 +76,7 @@ export function AuthProvider({ children }) {
       login,
       register,
       logout,
+      updateUser,
     }),
     [user, token, loading]
   );

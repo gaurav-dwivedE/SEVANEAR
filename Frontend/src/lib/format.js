@@ -16,5 +16,9 @@ export const isoDay = (offset) => {
 export const VISIT_FEE = 49;
 export const platformFee = (price) => Math.round(price * 0.05);
 export const total = (price) => price + VISIT_FEE + platformFee(price);
-export const img = (s) => s?.image || "/img/living.jpg";
-export const CATEGORIES = ["All", "Repairs", "Appliances", "Cleaning", "Renovation"];
+export const PLACEHOLDER = "/img/placeholder.svg";
+export const serviceImages = (s) => (s?.images?.length ? s.images : s?.image ? [s.image] : []);
+export const img = (s) => serviceImages(s)[0] || PLACEHOLDER;
+export const onImgError = (e) => {
+  if (!e.currentTarget.src.endsWith(PLACEHOLDER)) e.currentTarget.src = PLACEHOLDER;
+};

@@ -17,13 +17,13 @@ export function AdminRoute({ children }) {
 
   if (loading) return <Loader full />;
   if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} replace />;
-  if (!isAdmin) return <Navigate to="/dashboard" replace />;
+  if (!isAdmin) return <Navigate to="/" replace />;
   return children;
 }
 
 export function GuestOnlyRoute({ children }) {
   const { isAuthenticated, isAdmin, loading } = useAuth();
   if (loading) return <Loader full />;
-  if (isAuthenticated) return <Navigate to={isAdmin ? "/admin" : "/dashboard"} replace />;
+  if (isAuthenticated) return <Navigate to={isAdmin ? "/admin" : "/"} replace />;
   return children;
 }

@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
           {cols.map(([h, links]) => (
             <div key={h}>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">{h}</p>
+              <p className="mb-4 text-xs font-semibold text-white/50">{h}</p>
               <ul className="space-y-2.5 text-sm text-white/80">
                 {links.map(([to, l]) => (
                   <li key={to}><Link to={to} className="hover:text-white hover:underline">{l}</Link></li>
@@ -27,17 +27,17 @@ export default function Footer() {
             </div>
           ))}
           <div>
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">Support</p>
+            <p className="mb-4 text-xs font-semibold text-white/50">Support</p>
             <ul className="space-y-2.5 text-sm text-white/80">
-              <li>support@sevanear.in</li>
-              <li>+91 98000 00000</li>
+              <li>support@xxxxxxxx</li>
+              <li>+91 xxxxxxxxxx </li>
               <li>Mon–Sun, 8 AM – 9 PM</li>
             </ul>
           </div>
         </div>
         <div className="mt-12 flex flex-col justify-between gap-2 border-t border-white/15 pt-6 text-xs text-white/50 md:flex-row">
           <p>© {new Date().getFullYear()} SevaNear</p>
-          <p>Lonavla, Maharashtra, India</p>
+          <p>Rewa, Madhya Pradesh, India</p>
         </div>
       </div>
     </footer>

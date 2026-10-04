@@ -1,94 +1,75 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Icon, { Star } from "../components/ui/Icon";
 import StatusBadge from "../components/ui/StatusBadge";
 import FormMessage from "../components/ui/FormMessage";
-import { addressesApi, applicationsApi, getErrorMessage } from "../lib/api";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
+import ReviewModal from "../components/ui/ReviewModal";
+import CancelModal from "../components/ui/CancelModal";
+import Icon, { StarRow } from "../components/ui/Icon";
+import { applicationsApi, getErrorMessage } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import useTitle from "../lib/useTitle";
-import { fmtDate, slotLabel, rupee, img } from "../lib/format";
+import { fmtDate, slotLabel, rupee, img, onImgError } from "../lib/format";
 
 const FLOW = ["pending", "approved", "in_progress", "completed"];
 const FLOW_LABEL = ["Requested", "Partner assigned", "On the job", "Completed"];
+const ACTIVE = ["pending", "approved", "in_progress"];
+const FILTERS = [["all", "All"], ["active", "Active"], ["completed", "Completed"], ["closed", "Cancelled"]];
 
 function Timeline({ status }) {
-  if (status === "cancelled" || status === "rejected") return null;
+  if (!ACTIVE.includes(status)) return null;
   const at = FLOW.indexOf(status);
   return (
-    <ol className="mt-4 grid grid-cols-4 gap-1 text-center text-[11px] text-ivory-200">
+    <ol className="mt-4 grid grid-cols-4 gap-1 text-[11px] text-ivory-200">
       {FLOW_LABEL.map((l, i) => (
-        <li key={l}>
-          <div className={`mb-1 h-1.5 rounded-full ${i <= at ? "bg-moss-400" : "bg-ink-700"}`} />
-          <span className={i === at ? "font-semibold text-ivory-50" : ""}>{l}</span>
-        </li>
+        <li key={l}><div className={`mb-1 h-1 rounded-full ${i <= at ? "bg-black" : "bg-ink-700"}`} /><span className={i === at ? "font-semibold text-ivory-50" : ""}>{l}</span></li>
       ))}
     </ol>
   );
 }
 
-function Booking({ app, onChange }) {
-  const [busy, setBusy] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [err, setErr] = useState("");
-  async function run(fn) {
-    setBusy(true);
-    setErr("");
-    try {
-      await fn();
-      await onChange();
-    } catch (e) {
-      setErr(getErrorMessage(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-  const cancellable = ["pending", "approved"].includes(app.status);
+function Booking({ app, onCancel, onReview, onDelete }) {
+  const done = app.status === "completed";
+  const addr = app.selectedAddress;
   return (
-    <article className="card-surface p-4">
-      <div className="flex gap-4">
-        <img src={img(app.service)} alt="" className="hidden h-20 w-24 rounded-xl object-cover sm:block" />
+    <article className="overflow-hidden rounded-xl border border-ink-700 bg-white">
+      {done && (
+        <div className="flex items-center gap-2 border-b border-ink-700 bg-black px-4 py-2 text-sm font-medium text-white">
+          <Icon name="check" size={16} /> Job completed{app.paymentStatus === "paid" || app.invoice?.paymentStatus === "paid" ? " · Paid" : ""}
+        </div>
+      )}
+      <div className="flex gap-4 p-4">
+        <img src={img(app.service)} onError={onImgError} alt="" className="hidden h-20 w-24 shrink-0 rounded-lg object-cover sm:block" />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-display text-lg font-semibold text-ivory-50">{app.service?.name || "Service"}</h3>
+            <h3 className="text-lg">{app.service?.name || "Service"}</h3>
             <StatusBadge status={app.status} />
           </div>
-          <p className="text-sm text-ivory-200">
-            {app.scheduledDate ? `${fmtDate(app.scheduledDate)} · ${slotLabel(app.timeSlot)}` : "Schedule pending"}
-          </p>
-          <p className="text-sm text-ivory-200">
-            {app.selectedAddress ? `${app.selectedAddress.street}, ${app.selectedAddress.city}` : ""}
-          </p>
+          <p className="mt-0.5 text-sm text-ivory-200">{app.scheduledDate ? `${fmtDate(app.scheduledDate)} · ${slotLabel(app.timeSlot)}` : "Schedule pending"}</p>
+          {addr && <p className="text-sm text-ivory-200">{addr.street}, {addr.city} {addr.zipCode}</p>}
           <p className="mt-1 text-sm">
-            {app.partner ? (
-              <span className="text-ivory-100">Partner: <b>{app.partner.name}</b> · {app.partner.phone}</span>
-            ) : (
-              <span className="text-ivory-200">Assigning a partner…</span>
-            )}
-            {" · "}Est. {rupee(app.priceEstimate || app.service?.startingPrice)}
+            {app.partner ? <>Partner: <b>{app.partner.name}</b> · <a className="underline" href={`tel:${app.partner.phone}`}>{app.partner.phone}</a></> : <span className="text-ivory-200">{ACTIVE.includes(app.status) ? "Assigning a partner…" : ""}</span>}
           </p>
         </div>
       </div>
       <Timeline status={app.status} />
-      {app.status === "completed" &&
-        (app.rating ? (
-          <p className="mt-3 text-sm text-clay-400">You rated this  <span className="inline-flex align-middle">{Array.from({ length: app.rating }, (_, i) => <Star key={i} size={14} />)}</span></p>
-        ) : (
-          <div className="mt-3 flex items-center gap-1">
-            <span className="mr-2 text-sm text-ivory-200">Rate your experience:</span>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <button key={n} aria-label={`${n} stars`} disabled={busy}
-                onClick={() => { setRating(n); run(() => applicationsApi.review(app._id, { rating: n })); }}
-                className={`${n <= rating ? "text-black" : "text-ink-600"} hover:text-black`}><Star size={24} filled={n <= rating} /></button>
-            ))}
+      {app.status === "cancelled" && app.cancelReason && <p className="mx-4 mb-3 rounded-lg bg-ink-900 p-3 text-sm text-ivory-200">Cancelled: {app.cancelReason}</p>}
+      {done && app.rating > 0 && (
+        <div className="mx-4 mb-3 mt-3 rounded-lg bg-ink-900 p-3 text-sm">
+          <div className="flex items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-2"><StarRow value={app.rating} size={16} /><span className="font-medium">Your review</span></span>
+            <button className="text-sm font-semibold underline underline-offset-4" onClick={() => onReview(app)}>Edit</button>
           </div>
-        ))}
-      {cancellable && (
-        <button disabled={busy} className="mt-3 text-sm font-semibold text-black underline underline-offset-4"
-          onClick={() => window.confirm("Cancel this booking?") && run(() => applicationsApi.cancel(app._id, {}))}>
-          Cancel booking
-        </button>
+          {app.review && <p className="mt-1 text-ivory-200">“{app.review}”</p>}
+        </div>
       )}
-      <FormMessage>{err}</FormMessage>
+      <div className="flex flex-wrap items-center gap-2 border-t border-ink-700 px-4 py-3">
+        <span className="mr-auto text-sm text-ivory-200">{done ? "Total" : "Estimated"} <b className="text-ivory-50">{rupee(app.invoice?.total ?? app.priceEstimate)}</b></span>
+        <Link to={`/bookings/${app._id}/invoice`} className="btn-ghost !px-4 !py-2">View invoice</Link>
+        {done && !app.rating && <button className="btn-primary !px-4 !py-2" onClick={() => onReview(app)}>Rate & review</button>}
+        {["pending", "approved"].includes(app.status) && <button className="btn-ghost !px-4 !py-2" onClick={() => onCancel(app)}>Cancel</button>}
+        {!ACTIVE.includes(app.status) && <button className="grid h-9 w-9 place-items-center rounded-lg hover:bg-ink-700" aria-label="Delete booking" title="Delete booking" onClick={() => onDelete(app)}><Icon name="trash" size={17} /></button>}
+      </div>
     </article>
   );
 }
@@ -96,65 +77,41 @@ function Booking({ app, onChange }) {
 export default function UserDashboard() {
   useTitle("My bookings — SevaNear");
   const { user } = useAuth();
-  const [apps, setApps] = useState([]);
-  const [addresses, setAddresses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState("active");
+  const [apps, setApps] = useState(null);
+  const [filter, setFilter] = useState("all");
+  const [err, setErr] = useState("");
+  const [cancel, setCancel] = useState(null);
+  const [review, setReview] = useState(null);
+  const [del, setDel] = useState(null);
 
-  const load = useCallback(async () => {
-    const [a, ad] = await Promise.allSettled([applicationsApi.mine(), addressesApi.list()]);
-    if (a.status === "fulfilled") setApps(a.value.data.data || []);
-    if (ad.status === "fulfilled") setAddresses(ad.value.data.data || []);
-    setLoading(false);
-  }, []);
+  const load = useCallback(() => applicationsApi.mine().then(({ data }) => setApps(data.data || [])).catch((e) => setErr(getErrorMessage(e))), []);
   useEffect(() => { load(); }, [load]);
 
-  const active = apps.filter((a) => ["pending", "approved", "in_progress"].includes(a.status));
-  const past = apps.filter((a) => !active.includes(a));
-  const shown = tab === "active" ? active : past;
+  const match = (a) => filter === "all" || (filter === "active" && ACTIVE.includes(a.status)) || (filter === "completed" && a.status === "completed") || (filter === "closed" && ["cancelled", "rejected"].includes(a.status));
+  const count = (k) => (apps || []).filter((a) => k === "all" || (k === "active" && ACTIVE.includes(a.status)) || (k === "completed" && a.status === "completed") || (k === "closed" && ["cancelled", "rejected"].includes(a.status))).length;
+  const list = (apps || []).filter(match);
 
   return (
-    <div className="container-page py-8">
+    <div className="container-page max-w-3xl py-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="eyebrow">My account</p>
-          <h1 className="font-display text-3xl font-semibold text-ivory-50">Hi {user?.name?.split(" ")[0]}, here are your bookings</h1>
-        </div>
-        <Link to="/services" className="btn-accent"><Icon name="plus" size={16} /> Book a service</Link>
+        <div><h1 className="text-3xl md:text-4xl">My bookings</h1><p className="mt-1 text-ivory-200">Hi {user?.name?.split(" ")[0]}, here's everything you've booked.</p></div>
+        <Link to="/#services" className="btn-primary"><Icon name="plus" size={16} /> Book a service</Link>
       </div>
-
-      <div className="mt-6 inline-flex rounded-xl bg-ink-700 p-1">
-        {[["active", `Active (${active.length})`], ["past", `Past (${past.length})`]].map(([k, l]) => (
-          <button key={k} onClick={() => setTab(k)}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold ${tab === k ? "bg-ink-800 text-ivory-50 shadow" : "text-ivory-200"}`}>{l}</button>
+      <div className="mt-6 flex gap-2 overflow-x-auto">
+        {FILTERS.map(([k, l]) => (
+          <button key={k} onClick={() => setFilter(k)} className={`shrink-0 rounded-full border px-4 py-1.5 text-sm ${filter === k ? "border-black bg-black text-white" : "border-ink-600 hover:border-black"}`}>{l} {apps ? <span className="opacity-60">{count(k)}</span> : null}</button>
         ))}
       </div>
-
-      <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-4">
-          {loading && <div className="skeleton h-40" />}
-          {!loading && !shown.length && (
-            <div className="card-surface p-8 text-center text-ivory-200">
-              {tab === "active" ? "No active bookings." : "No past bookings yet."}{" "}
-              <Link to="/services" className="font-semibold text-moss-400">Find a service</Link>
-            </div>
-          )}
-          {shown.map((a) => <Booking key={a._id} app={a} onChange={load} />)}
-        </div>
-        <aside className="card-surface h-fit p-5">
-          <h2 className="font-display text-xl font-semibold text-ivory-50">Saved addresses</h2>
-          <ul className="mt-3 space-y-3 text-sm">
-            {addresses.map((ad) => (
-              <li key={ad._id} className="flex justify-between gap-2 text-ivory-100">
-                <span>{ad.street}, {ad.city}, {ad.state} {ad.zipCode}</span>
-                <button aria-label="Delete address" className="text-ivory-200 hover:text-black"
-                  onClick={() => addressesApi.remove(ad._id).then(load)}><Icon name="x" size={16} /></button>
-              </li>
-            ))}
-            {!addresses.length && <li className="text-ivory-200">Add an address when you book.</li>}
-          </ul>
-        </aside>
+      <FormMessage>{err}</FormMessage>
+      <div className="mt-4 space-y-4">
+        {!apps && <div className="skeleton h-40" />}
+        {apps && !list.length && <div className="rounded-xl border border-dashed border-ink-600 p-10 text-center text-ivory-200">Nothing here yet. <Link to="/#services" className="font-semibold text-black underline">Find a service</Link></div>}
+        {list.map((a) => <Booking key={a._id} app={a} onCancel={setCancel} onReview={setReview} onDelete={setDel} />)}
       </div>
+      {cancel && <CancelModal booking={cancel} onClose={() => setCancel(null)} onDone={() => { setCancel(null); load(); }} />}
+      <ConfirmDialog open={!!del} title="Delete this booking?" message="It will be removed from your list. If you left a review, it stays on the service page." onClose={() => setDel(null)}
+        onConfirm={async () => { try { await applicationsApi.removeMine(del._id); setApps((l) => l.filter((x) => x._id !== del._id)); } catch (e) { setErr(getErrorMessage(e)); } setDel(null); }} />
+      {review && <ReviewModal booking={review} onClose={() => setReview(null)} onDone={() => { setReview(null); load(); }} />}
     </div>
   );
 }

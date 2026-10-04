@@ -7,7 +7,11 @@ import Reveal from "../components/motion/Reveal";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(() => {
+    const n = sessionStorage.getItem("sevanear_notice");
+    sessionStorage.removeItem("sevanear_notice");
+    return n || "";
+  });
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -26,7 +30,7 @@ export default function Login() {
     }
 
     const redirectTo =
-      location.state?.from?.pathname || (result.user.role === "admin" ? "/admin" : "/dashboard");
+      result.user.role === "admin" ? "/admin" : location.state?.from?.pathname || "/";
     navigate(redirectTo, { replace: true });
   }
 

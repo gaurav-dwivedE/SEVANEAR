@@ -1,82 +1,103 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
+export const api = axios.create({ baseURL, timeout: 20000 });
 
-export const api = axios.create({ baseURL, timeout: 15000 });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("sevanear_token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 api.interceptors.response.use(
   (r) => r,
   (e) => {
-    if (e.response?.status === 401 && localStorage.getItem("sevanear_token") && !e.config.url.includes("/auth/")) {
-      localStorage.removeItem("sevanear_token");
-      window.location.assign("/login");
+    const hasToken = localStorage.getItem("sevanear_token");
+    const isAuthCall = e.config?.url?.includes("/auth/login") || e.config?.url?.includes("/auth/register");
+    if (hasToken && !isAuthCall) {
+      if (e.response?.data?.code === "BLOCKED") {
+        localStorage.removeItem("sevanear_token");
+        sessionStorage.setItem("sevanear_notice", e.response.data.message);
+        window.location.assign("/login");
+      } else if (e.response?.status === 401) {
+        localStorage.removeItem("sevanear_token");
+        window.location.assign("/login");
+      }
     }
     return Promise.reject(e);
   }
 );
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("sevanear_token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Normalizes backend error shape ({status:'failed'|'error', message}) into a plain string.
 export function getErrorMessage(error, fallback = "Something went wrong. Please try again.") {
   return (
     error?.response?.data?.message ||
-    (error?.request && !error?.response
-      ? "Can't reach the server. Is the backend running?"
-      : null) ||
+    (error?.request && !error?.response ? "Can't reach the server. Please check your connection." : null) ||
     fallback
   );
 }
 
-// ---- Auth ----
+const d = (p) => p.then((r) => r.data);
 export const authApi = {
-  register: (payload) => api.post("/auth/register", payload),
-  login: (payload) => api.post("/auth/login", payload),
+  register: (p) => api.post("/auth/register", p),
+  login: (p) => api.post("/auth/login", p),
   me: () => api.get("/auth/me"),
+  setPincode: (p) => api.patch("/auth/me/pincode", p),
   allUsers: () => api.get("/auth/users"),
+  block: (id, blocked) => api.patch(`/auth/users/${id}/block`, { blocked }),
+  removeUser: (id) => api.delete(`/auth/users/${id}`),
 };
-
-// ---- Services ----
+export const categoriesApi = {
+  list: (all) => api.get("/categories", { params: all ? { all: 1 } : {} }),
+  create: (p) => api.post("/categories", p),
+  update: (id, p) => api.patch(`/categories/${id}`, p),
+  remove: (id) => api.delete(`/categories/${id}`),
+};
 export const servicesApi = {
-  list: () => api.get("/services"),
-  get: (id) => api.get(`/services/${id}`),
-  create: (payload) => api.post("/services", payload),
-  update: (id, payload) => api.patch(`/services/${id}`, payload),
+  list: (params) => api.get("/services", { params }),
+  get: (id, params) => api.get(`/services/${id}`, { params }),
+  reviews: (id) => api.get(`/services/${id}/reviews`),
+  create: (p) => api.post("/services", p),
+  update: (id, p) => api.patch(`/services/${id}`, p),
   remove: (id) => api.delete(`/services/${id}`),
 };
-
-// ---- Addresses ----
 export const addressesApi = {
   list: () => api.get("/addresses"),
-  create: (payload) => api.post("/addresses", payload),
+  create: (p) => api.post("/addresses", p),
+  update: (id, p) => api.patch(`/addresses/${id}`, p),
   remove: (id) => api.delete(`/addresses/${id}`),
 };
-
-// ---- Applications (bookings) ----
 export const applicationsApi = {
   mine: () => api.get("/applications"),
-  create: (payload) => api.post("/applications", payload),
-  all: (status) => api.get("/applications/all", { params: status ? { status } : {} }),
-  update: (id, payload) => api.patch(`/applications/${id}`, payload),
-  cancel: (id, payload) => api.post(`/applications/${id}/cancel`, payload),
-  review: (id, payload) => api.post(`/applications/${id}/review`, payload),
+  get: (id) => api.get(`/applications/${id}`),
+  create: (p) => api.post("/applications", p),
+  all: (params) => api.get("/applications/all", { params }),
+  update: (id, p) => api.patch(`/applications/${id}`, p),
+  remove: (id) => api.delete(`/applications/${id}`),
+  removeMine: (id) => api.delete(`/applications/${id}/mine`),
+  cancel: (id, p) => api.post(`/applications/${id}/cancel`, p),
+  review: (id, p) => api.post(`/applications/${id}/review`, p),
 };
-
-// ---- Partners ----
 export const partnersApi = {
-  list: (service) => api.get("/partners", { params: service ? { service } : {} }),
-  create: (payload) => api.post("/partners", payload),
+  list: (params) => api.get("/partners", { params }),
+  create: (p) => api.post("/partners", p),
+  update: (id, p) => api.patch(`/partners/${id}`, p),
+  remove: (id) => api.delete(`/partners/${id}`),
 };
-
-// ---- Partner applications ("Become a Partner" intake) ----
 export const partnerApplicationsApi = {
-  submit: (payload) => api.post("/partner-applications", payload),
+  submit: (p) => api.post("/partner-applications", p),
   all: (status) => api.get("/partner-applications", { params: status ? { status } : {} }),
-  update: (id, payload) => api.patch(`/partner-applications/${id}`, payload),
+  update: (id, p) => api.patch(`/partner-applications/${id}`, p),
 };
+const pinCache = {};
+export async function lookupPincode(pin) {
+  if (pinCache[pin]) return pinCache[pin];
+  const { data } = await api.get(`/pincode/${pin}`);
+  return (pinCache[pin] = data.data);
+}
+export async function uploadImage(file, folder = "services") {
+  const fd = new FormData();
+  fd.append("image", file);
+  const { data } = await api.post(`/uploads?folder=${folder}`, fd);
+  return data.data.url;
+}
+export { d };

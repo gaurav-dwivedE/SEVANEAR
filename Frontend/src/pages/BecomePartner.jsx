@@ -3,6 +3,7 @@ import SplitHeading from "../components/motion/SplitHeading";
 import Reveal from "../components/motion/Reveal";
 import FormMessage from "../components/ui/FormMessage";
 import Loader from "../components/ui/Loader";
+import PincodeField from "../components/ui/PincodeField";
 import { servicesApi, partnerApplicationsApi, getErrorMessage } from "../lib/api";
 
 const perks = [
@@ -17,6 +18,7 @@ const initialForm = {
   phone: "",
   email: "",
   city: "",
+  pincode: "",
   service: "",
   experience: "0-1 years",
   message: "",
@@ -44,8 +46,8 @@ export default function BecomePartner() {
     e.preventDefault();
     setError("");
 
-    if (!form.name || !form.phone || !form.city || !form.service) {
-      setError("Name, phone, city and service are required.");
+    if (!form.name || !form.phone || !form.city || !form.service || !/^[1-9][0-9]{5}$/.test(form.pincode)) {
+      setError("Name, phone, city, a valid 6-digit PIN code and service are required.");
       return;
     }
 
@@ -132,6 +134,9 @@ export default function BecomePartner() {
                     />
                   </div>
                 </div>
+
+                <PincodeField label="PIN code of your main work area" value={form.pincode} onChange={(v) => update("pincode", v)}
+                  onVerified={(i) => i && update("city", i.city)} />
 
                 <div>
                   <label className="label-field">City</label>

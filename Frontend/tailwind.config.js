@@ -17,8 +17,8 @@ export default {
         red: { 300: "#111111", 400: "#111111" },
       },
       fontFamily: {
-        display: ["'Bricolage Grotesque'", "ui-sans-serif", "system-ui", "sans-serif"],
-        sans: ["'Manrope'", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Manrope", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       letterSpacing: {
         tightest: "-0.045em",
