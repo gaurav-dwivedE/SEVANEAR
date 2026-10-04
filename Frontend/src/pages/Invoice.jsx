@@ -9,7 +9,7 @@ export default function Invoice() {
   const { id } = useParams();
   const [b, setB] = useState(null);
   const [err, setErr] = useState("");
-  useTitle("Invoice — SevaNear");
+  useTitle("Invoice — ServiceHome");
   useEffect(() => { applicationsApi.get(id).then(({ data }) => setB(data.data)).catch((e) => setErr(getErrorMessage(e))); }, [id]);
 
   if (err) return <div className="container-page py-20 text-center"><p>{err}</p><Link to="/bookings" className="btn-primary mt-5">Back to bookings</Link></div>;
@@ -25,7 +25,7 @@ export default function Invoice() {
       </div>
       <div className="rounded-xl border border-ink-600 bg-white p-6 md:p-10">
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-ink-700 pb-6">
-          <div><p className="font-display text-2xl font-extrabold">SevaNear</p><p className="text-sm text-ivory-200">support@sevanear.in</p></div>
+          <div><p className="font-display text-2xl font-extrabold">ServiceHome</p><p className="text-sm text-ivory-200">support@servicehome.in</p></div>
           <div className="text-right text-sm"><p className="text-lg font-bold">{inv.isFinal ? "Invoice" : "Estimate"}</p><p className="text-ivory-200">No. {inv.number}</p><p className="text-ivory-200">Booked {fmtDate(b.createdAt)}</p></div>
         </div>
 
@@ -46,7 +46,7 @@ export default function Invoice() {
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
           <span className={`rounded-full border px-3 py-1 font-semibold ${inv.paymentStatus === "paid" ? "border-black bg-black text-white" : "border-black"}`}>{inv.paymentStatus === "paid" ? `Paid${inv.paidAt ? " on " + fmtDate(inv.paidAt) : ""}` : "Payment due after the job"}</span>
-          <span className="text-ivory-200">{inv.isFinal ? "Thank you for choosing SevaNear." : "Final amount is confirmed once the job is done. Parts or extra work are added only with your approval."}</span>
+          <span className="text-ivory-200">{inv.isFinal ? "Thank you for choosing ServiceHome." : "Final amount is confirmed once the job is done. Parts or extra work are added only with your approval."}</span>
         </div>
       </div>
     </div>

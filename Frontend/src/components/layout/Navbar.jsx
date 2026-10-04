@@ -62,7 +62,9 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-ink-700 bg-white/95 backdrop-blur">
       <div className="container-page flex h-16 items-center gap-6">
-        <Link to="/" className="font-display text-2xl font-extrabold leading-none text-ivory-50">SevaNear</Link>
+        <Link to="/" className="font-display flex justify-center items-center text-2xl font-extrabold leading-none text-ivory-50">
+          <img src="/img/logo.png" alt="ServiceHome" className="h-10 w-10" />
+        </Link>
 
         <nav className="relative ml-4 hidden h-full items-center gap-7 lg:flex" aria-label="Primary">
           {SECTIONS.map((s) => (

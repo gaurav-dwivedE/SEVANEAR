@@ -75,7 +75,7 @@ function Booking({ app, onCancel, onReview, onDelete }) {
 }
 
 export default function UserDashboard() {
-  useTitle("My bookings — SevaNear");
+  useTitle("My bookings — ServiceHome");
   const { user } = useAuth();
   const [apps, setApps] = useState(null);
   const [filter, setFilter] = useState("all");

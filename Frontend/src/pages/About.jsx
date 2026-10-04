@@ -8,7 +8,7 @@ const values = [
 ];
 
 const timeline = [
-  { year: "2023", copy: "SevaNear starts as a small directory of trusted local plumbers and electricians." },
+  { year: "2023", copy: "ServiceHome starts as a small directory of trusted local plumbers and electricians." },
   { year: "2024", copy: "Expanded into cleaning, painting, appliance repair and vehicle services." },
   { year: "2025", copy: "Crossed 500 verified partners across a dozen cities." },
   { year: "2026", copy: "Rebuilt the platform around a real-time booking and partner-matching engine." },
@@ -18,7 +18,7 @@ export default function About() {
   return (
     <div className="pb-28 pt-40">
       <section className="container-page">
-        <p className="eyebrow mb-4">About SevaNear</p>
+        <p className="eyebrow mb-4">About ServiceHome</p>
         <SplitHeading
           as="h1"
           trigger="mount"
@@ -27,7 +27,7 @@ export default function About() {
         />
         <Reveal delay={0.2}>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ivory-200/60">
-            We started SevaNear because finding a plumber you actually trust shouldn't take five
+            We started ServiceHome because finding a plumber you actually trust shouldn't take five
             phone calls and a leap of faith. Today we connect thousands of households with
             verified local professionals across every service a home might need.
           </p>

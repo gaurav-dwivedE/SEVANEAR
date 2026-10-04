@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container-page">
         <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1.4fr]">
           <div>
-            <Link to="/" className="font-display text-2xl font-semibold">SevaNear</Link>
+            <Link to="/" className="font-display text-2xl font-semibold">ServiceHome</Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/60">
               Background-verified local professionals for repairs, cleaning and appliance care. Upfront pricing, no surprises.
             </p>
@@ -36,7 +36,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 flex flex-col justify-between gap-2 border-t border-white/15 pt-6 text-xs text-white/50 md:flex-row">
-          <p>© {new Date().getFullYear()} SevaNear</p>
+          <p>© {new Date().getFullYear()} ServiceHome</p>
           <p>Rewa, Madhya Pradesh, India</p>
         </div>
       </div>

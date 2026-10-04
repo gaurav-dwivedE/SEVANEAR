@@ -27,7 +27,7 @@ export default function ServiceDetail() {
   }, [id, pincode]);
   useEffect(() => setShot(0), [id]);
 
-  useTitle(service ? `${service.name} — SevaNear` : "SevaNear");
+  useTitle(service ? `${service.name} — ServiceHome` : "ServiceHome");
 
   if (missing)
     return (

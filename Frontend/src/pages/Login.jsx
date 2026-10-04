@@ -38,7 +38,7 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center px-6 pb-20 pt-32">
       <Reveal className="card-surface w-full max-w-md p-8 md:p-10">
         <p className="eyebrow mb-3">Welcome back</p>
-        <h1 className="font-display text-3xl text-ivory-50">Log in to SevaNear</h1>
+        <h1 className="font-display text-3xl text-ivory-50">Log in to ServiceHome</h1>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
@@ -72,7 +72,7 @@ export default function Login() {
         </form>
 
         <p className="mt-8 text-center text-sm text-ivory-200/50">
-          New to SevaNear?{" "}
+          New to ServiceHome?{" "}
           <Link to="/signup" className="text-clay-400 hover:text-clay-500">
             Create an account
           </Link>

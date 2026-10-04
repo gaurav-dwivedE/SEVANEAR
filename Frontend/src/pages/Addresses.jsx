@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import useTitle from "../lib/useTitle";
 
 export default function Addresses() {
-  useTitle("Saved addresses — SevaNear");
+  useTitle("Saved addresses — ServiceHome");
   const { user } = useAuth();
   const [list, setList] = useState(null);
   const [edit, setEdit] = useState(null); // null | {} (new) | address

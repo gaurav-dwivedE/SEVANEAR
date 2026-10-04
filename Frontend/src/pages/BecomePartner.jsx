@@ -75,7 +75,7 @@ export default function BecomePartner() {
           />
           <Reveal delay={0.2}>
             <p className="mt-8 max-w-lg text-lg leading-relaxed text-ivory-200/60">
-              SevaNear partners get a steady stream of verified local jobs — no cold calling, no
+              ServiceHome partners get a steady stream of verified local jobs — no cold calling, no
               race-to-the-bottom bidding. Just quality work, near you.
             </p>
           </Reveal>

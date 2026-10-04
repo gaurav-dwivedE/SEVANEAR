@@ -38,7 +38,7 @@ const journey = [
 const faqs = [
   {
     q: "How are partners verified?",
-    a: "Every partner listed on SevaNear goes through an identity and background check, plus a skills review for their listed service category before they're allowed to accept jobs.",
+    a: "Every partner listed on ServiceHome goes through an identity and background check, plus a skills review for their listed service category before they're allowed to accept jobs.",
   },
   {
     q: "What if I need to change my address after booking?",

@@ -20,7 +20,7 @@ const faqs = [
 ];
 
 export default function Home() {
-  useTitle("SevaNear — Trusted home services near you");
+  useTitle("ServiceHome — Trusted home services near you");
   const [tab, setTab] = useState("service");
   const [q, setQ] = useState("");
   const navigate = useNavigate();
@@ -91,20 +91,20 @@ export default function Home() {
         <div className="container-page grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <h2 className="text-3xl">Are you a skilled professional?</h2>
-            <p className="mt-3 max-w-lg text-ivory-200">If you work as a plumber, electrician, AC technician, cleaner or carpenter, join SevaNear as a service partner. Choose the PIN codes you want to work in, get booked by customers nearby, and there's no joining fee.</p>
+            <p className="mt-3 max-w-lg text-ivory-200">If you work as a plumber, electrician, AC technician, cleaner or carpenter, join ServiceHome as a service partner. Choose the PIN codes you want to work in, get booked by customers nearby, and there's no joining fee.</p>
             <Link to="/become-a-partner" className="btn-primary mt-6">Apply as a partner</Link>
           </div>
-          <img src="/img/partner.jpg" alt="A SevaNear service partner" loading="lazy" className="h-64 w-full rounded-xl object-cover" />
+          <img src="/img/partner.jpg" alt="A ServiceHome service partner" loading="lazy" className="h-64 w-full rounded-xl object-cover" />
         </div>
       </section>
 
       <section id="about" className="border-t border-ink-700 bg-ink-900 py-14">
         <div className="container-page grid gap-12 lg:grid-cols-2">
           <div>
-            <h2 className="text-3xl">About SevaNear</h2>
-            <p className="mt-4 text-ivory-200">SevaNear connects households with trusted local professionals. We verify every partner, show prices before you book, and keep you updated from the request to the finished job.</p>
+            <h2 className="text-3xl">About ServiceHome</h2>
+            <p className="mt-4 text-ivory-200">ServiceHome connects households with trusted local professionals. We verify every partner, show prices before you book, and keep you updated from the request to the finished job.</p>
             <p className="mt-3 text-ivory-200">We grow area by area. A service is offered only in PIN codes where a verified partner is ready, so a confirmed booking means someone can really come.</p>
-            <p className="mt-6 text-sm"><b>Need help?</b> <span className="text-ivory-200">Write to support@sevanear.in, every day 8 AM to 9 PM.</span></p>
+            <p className="mt-6 text-sm"><b>Need help?</b> <span className="text-ivory-200">Write to support@servicehome.in, every day 8 AM to 9 PM.</span></p>
           </div>
           <div>
             <h3 className="text-xl">Questions people ask</h3>
