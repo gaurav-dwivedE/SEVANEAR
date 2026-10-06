@@ -21,7 +21,7 @@ export default function ServiceReviews({ serviceId }) {
             <p className="mt-1 text-sm text-ivory-200">{d.count} rating{d.count > 1 ? "s" : ""}</p>
             <div className="mt-4 space-y-1.5">
               {[5, 4, 3, 2, 1].map((n) => (
-                <div key={n} className="flex items-center gap-2 text-xs"><span className="w-3">{n}</span><div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-700"><div className="h-full bg-black" style={{ width: `${(d.distribution[n - 1] / max) * 100}%` }} /></div><span className="w-5 text-right text-ivory-200">{d.distribution[n - 1]}</span></div>
+                <div key={n} className="flex items-center gap-2 text-xs"><span className="w-3">{n}</span><div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-700"><div className="h-full bg-brand-600" style={{ width: `${(d.distribution[n - 1] / max) * 100}%` }} /></div><span className="w-5 text-right text-ivory-200">{d.distribution[n - 1]}</span></div>
               ))}
             </div>
           </div>

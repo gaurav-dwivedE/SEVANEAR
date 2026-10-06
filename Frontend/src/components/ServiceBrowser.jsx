@@ -23,7 +23,7 @@ export default function ServiceBrowser({ limit, search = false }) {
       <div className="flex flex-wrap items-center gap-2">
         {[{ _id: "", name: "All" }, ...categories].map((c) => (
           <button key={c._id} onClick={() => setCat(c._id)}
-            className={`rounded-full border px-4 py-1.5 text-sm transition ${cat === c._id ? "border-black bg-black text-white" : "border-ink-600 hover:border-black"}`}>
+            className={`rounded-full border px-4 py-1.5 text-sm transition ${cat === c._id ? "border-brand-600 bg-brand-600 text-white" : "border-ink-600 hover:border-brand-600"}`}>
             {c.name}
           </button>
         ))}
@@ -45,7 +45,7 @@ export default function ServiceBrowser({ limit, search = false }) {
       {!loading && !shown.length && !error && (
         <div className="mt-8 rounded-xl border border-dashed border-ink-600 p-8 text-center text-ivory-200">
           {pincode && mine ? `No services are available at ${pincode} yet.` : "No services match your search."}{" "}
-          {pincode && mine && <button className="font-semibold text-black underline" onClick={() => setMine(false)}>Show all services</button>}
+          {pincode && mine && <button className="font-semibold text-brand-600 underline" onClick={() => setMine(false)}>Show all services</button>}
         </div>
       )}
       {limit && services.length > limit && (

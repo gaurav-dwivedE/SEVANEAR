@@ -48,7 +48,7 @@ export default function BookServiceForm({ service, onSuccess }) {
   const Steps = () => (
     <ol className="mb-5 flex gap-1.5" aria-label="Progress">
       {["Date & time", "Address", "Review"].map((l, i) => (
-        <li key={l} className="flex-1"><div className={`h-1 rounded-full ${i < step ? "bg-black" : "bg-ink-700"}`} /><span className={`mt-1 block text-[11px] ${i + 1 === step ? "font-semibold" : "text-ivory-200"}`}>{l}</span></li>
+        <li key={l} className="flex-1"><div className={`h-1 rounded-full ${i < step ? "bg-brand-600" : "bg-ink-700"}`} /><span className={`mt-1 block text-[11px] ${i + 1 === step ? "font-semibold" : "text-ivory-200"}`}>{l}</span></li>
       ))}
     </ol>
   );
@@ -61,7 +61,7 @@ export default function BookServiceForm({ service, onSuccess }) {
           <label className="label-field">Time slot</label>
           <div className="grid grid-cols-2 gap-2">
             {SLOTS.map((s) => (
-              <button type="button" key={s.v} onClick={() => setSlot(s.v)} className={`rounded-xl border px-3 py-2.5 text-sm ${slot === s.v ? "border-black bg-black text-white" : "border-ink-600 hover:border-black"}`}>{s.l}</button>
+              <button type="button" key={s.v} onClick={() => setSlot(s.v)} className={`rounded-xl border px-3 py-2.5 text-sm ${slot === s.v ? "border-brand-600 bg-brand-600 text-white" : "border-ink-600 hover:border-brand-600"}`}>{s.l}</button>
             ))}
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function BookServiceForm({ service, onSuccess }) {
           <>
             <div className="space-y-2">
               {addresses.map((a) => (
-                <label key={a._id} className={`flex cursor-pointer gap-3 rounded-xl border p-3 text-sm ${addrId === a._id ? "border-black bg-ink-900" : "border-ink-600"}`}>
+                <label key={a._id} className={`flex cursor-pointer gap-3 rounded-xl border p-3 text-sm ${addrId === a._id ? "border-brand-600 bg-brand-50" : "border-ink-600"}`}>
                   <input type="radio" className="mt-1 accent-black" checked={addrId === a._id} onChange={() => setAddrId(a._id)} />
                   <span><b>{a.label}</b> · {a.mobile}<br />{[a.houseNo, a.street, a.landmark].filter(Boolean).join(", ")}<br />{a.city}, {a.state} {a.zipCode}</span>
                 </label>

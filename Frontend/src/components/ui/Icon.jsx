@@ -43,7 +43,7 @@ export function StarRow({ value = 0, size = 16, className = "" }) {
   return (
     <span className={`relative inline-flex shrink-0 align-middle ${className}`} role="img" aria-label={`${value} out of 5 stars`}>
       <span className="text-ink-600">{row(false)}</span>
-      <span className="absolute inset-y-0 left-0 overflow-hidden text-black" style={{ width: `${pct}%` }}><span className="flex w-max">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={size} filled />)}</span></span>
+      <span className="absolute inset-y-0 left-0 overflow-hidden text-accent-400" style={{ width: `${pct}%` }}><span className="flex w-max">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={size} filled />)}</span></span>
     </span>
   );
 }

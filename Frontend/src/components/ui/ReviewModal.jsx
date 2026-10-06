@@ -31,7 +31,7 @@ export default function ReviewModal({ booking, onClose, onDone }) {
           <div className="flex items-center gap-1" onMouseLeave={() => setHover(0)}>
             {[1, 2, 3, 4, 5].map((n) => (
               <button type="button" key={n} aria-label={`${n} star${n > 1 ? "s" : ""}`} onMouseEnter={() => setHover(n)} onClick={() => setRating(n)}
-                className={n <= shown ? "text-black" : "text-ink-600"}><Star size={34} filled={n <= shown} /></button>
+                className={n <= shown ? "text-accent-400" : "text-ink-600"}><Star size={34} filled={n <= shown} /></button>
             ))}
             <span className="ml-3 text-sm font-medium">{LABELS[shown]}</span>
           </div>

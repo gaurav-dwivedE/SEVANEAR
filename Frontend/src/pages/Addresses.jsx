@@ -28,7 +28,7 @@ export default function Addresses() {
         {list?.map((a) => (
           <article key={a._id} className="flex items-start justify-between gap-4 rounded-xl border border-ink-700 bg-white p-5">
             <div className="text-sm">
-              <span className="rounded bg-black px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">{a.label}</span>
+              <span className="rounded bg-brand-600 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">{a.label}</span>
               <p className="mt-2 font-semibold">{a.contactName || user?.name} · {a.mobile}</p>
               <p className="text-ivory-200">{[a.houseNo, a.street, a.landmark].filter(Boolean).join(", ")}</p>
               <p className="text-ivory-200">{a.city}, {a.state} {a.zipCode}</p>

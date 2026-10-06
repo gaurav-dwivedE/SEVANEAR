@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 html {
-  background: #ffffff;
+  background: #f5f8ff;
   scroll-behavior: smooth;
 }
 
 ::selection {
-  background: #000000;
+  background: #2563eb;
   color: #ffffff;
 }
 
@@ -21,14 +21,14 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f6f6f6;
+  background: #eef3ff;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d2d2d2;
+  background: #b8c6e3;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8a8a8a;
+  background: #2563eb;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -79,15 +79,15 @@ body {
 
 .btn-primary,
 .btn-accent {
-  @apply btn-base bg-black text-white hover:bg-neutral-700;
+  @apply btn-base bg-gradient-to-b from-brand-500 to-brand-600 text-white shadow-md shadow-brand-600/25 hover:from-brand-600 hover:to-brand-700 hover:shadow-lg active:scale-[.98];
 }
 
 .btn-ghost {
-  @apply btn-base border border-ink-600 bg-white text-black hover:border-black;
+  @apply btn-base border border-ink-600 bg-white text-ivory-50 hover:border-brand-600 hover:text-brand-600;
 }
 
 .card-surface {
-  @apply rounded-2xl border border-ink-700 bg-ink-800 shadow-[0_1px_2px_rgba(12,60,46,0.05)];
+  @apply rounded-2xl border border-ink-700 bg-ink-800 shadow-[0_1px_3px_rgba(37,99,235,0.08)] transition-shadow hover:shadow-[0_6px_20px_rgba(37,99,235,0.10)];
 }
 
 .skeleton {
@@ -95,7 +95,7 @@ body {
 }
 
 .input-field {
-  @apply w-full rounded-xl border border-ink-600 bg-ink-800 px-4 py-3 text-sm text-ivory-100 placeholder:text-ivory-200/50 outline-none transition-colors focus:border-black focus:ring-2 focus:ring-black/10;
+  @apply w-full rounded-xl border border-ink-600 bg-ink-800 px-4 py-3 text-sm text-ivory-100 placeholder:text-ivory-200/50 outline-none transition-colors focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20;
 }
 
 .label-field {
@@ -103,6 +103,7 @@ body {
 }
 
 h1, h2, h3 {
+  color: #0b1b3b;
   font-family: Manrope, Inter, ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;

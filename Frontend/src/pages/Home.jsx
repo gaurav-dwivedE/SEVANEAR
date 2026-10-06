@@ -36,7 +36,7 @@ export default function Home() {
           <div className="mt-7 max-w-xl">
             <div className="mb-3 flex gap-5 border-b border-ink-700 text-sm font-medium" role="tablist">
               {[["service", "Find a service"], ["pin", "Check my area"]].map(([k, l]) => (
-                <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={`-mb-px border-b-2 pb-2 ${tab === k ? "border-black text-black" : "border-transparent text-ivory-200 hover:text-black"}`}>{l}</button>
+                <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={`-mb-px border-b-2 pb-2 ${tab === k ? "border-brand-600 text-brand-600" : "border-transparent text-ivory-200 hover:text-brand-600"}`}>{l}</button>
               ))}
             </div>
             {tab === "service" ? (
@@ -51,7 +51,7 @@ export default function Home() {
           </div>
 
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ivory-200">
-            {["ID-verified partners", "Upfront pricing", "Pay after the job"].map((t) => <li key={t} className="flex items-center gap-1.5"><Icon name="check" size={15} className="text-black" />{t}</li>)}
+            {["ID-verified partners", "Upfront pricing", "Pay after the job"].map((t) => <li key={t} className="flex items-center gap-1.5"><Icon name="check" size={15} className="text-brand-600" />{t}</li>)}
           </ul>
         </div>
         <div className="grid grid-cols-5 grid-rows-2 gap-3">
@@ -80,7 +80,7 @@ export default function Home() {
             <h2 className="text-3xl">How it works</h2>
             <ol className="mt-6 space-y-5">
               {steps.map(([t, d], i) => (
-                <li key={t} className="flex gap-4"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-black text-sm font-semibold">{i + 1}</span><div><p className="font-semibold">{t}</p><p className="text-ivory-200">{d}</p></div></li>
+                <li key={t} className="flex gap-4"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-brand-600 text-sm font-semibold">{i + 1}</span><div><p className="font-semibold">{t}</p><p className="text-ivory-200">{d}</p></div></li>
               ))}
             </ol>
           </div>

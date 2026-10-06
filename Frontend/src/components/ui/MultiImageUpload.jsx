@@ -33,7 +33,7 @@ export default function MultiImageUpload({ value = [], onChange, folder = "servi
         {value.map((u, i) => (
           <div key={u} className="group relative aspect-square overflow-hidden rounded-lg bg-ink-700">
             <img src={u} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
-            {i === 0 && <span className="absolute left-1 top-1 rounded bg-black px-1.5 py-0.5 text-[10px] font-medium text-white">Cover</span>}
+            {i === 0 && <span className="absolute left-1 top-1 rounded bg-brand-600 px-1.5 py-0.5 text-[10px] font-medium text-white">Cover</span>}
             <button type="button" aria-label="Remove photo" onClick={() => onChange(value.filter((_, j) => j !== i))}
               className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-white shadow"><Icon name="x" size={13} /></button>
             {i !== 0 && <button type="button" onClick={() => makeCover(i)} className="absolute inset-x-1 bottom-1 rounded bg-white/95 py-0.5 text-[11px] font-medium opacity-0 shadow transition group-hover:opacity-100 focus:opacity-100">Make cover</button>}
@@ -41,13 +41,13 @@ export default function MultiImageUpload({ value = [], onChange, folder = "servi
         ))}
         {Array.from({ length: busy }, (_, i) => <div key={`b${i}`} className="skeleton aspect-square" />)}
         {room - busy > 0 && (
-          <button type="button" onClick={() => ref.current?.click()} className="grid aspect-square place-items-center rounded-lg border border-dashed border-ink-600 text-xs text-ivory-200 hover:border-black hover:text-black">
+          <button type="button" onClick={() => ref.current?.click()} className="grid aspect-square place-items-center rounded-lg border border-dashed border-ink-600 text-xs text-ivory-200 hover:border-brand-600 hover:text-brand-600">
             <span className="flex flex-col items-center gap-1"><Icon name="plus" size={20} />Add photo</span>
           </button>
         )}
       </div>
       <input ref={ref} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={pick} />
-      {err && <p className="mt-1 text-xs font-semibold text-black">{err}</p>}
+      {err && <p className="mt-1 text-xs font-semibold text-red-600">{err}</p>}
     </div>
   );
 }

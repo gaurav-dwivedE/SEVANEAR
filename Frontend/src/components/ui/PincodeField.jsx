@@ -34,7 +34,7 @@ export default function PincodeField({ value, onChange, onVerified, label = "PIN
         value={value || ""} onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 6))}
       />
       {state.msg && (
-        <p className={`mt-1.5 text-xs ${state.s === "bad" ? "font-semibold text-black" : "text-ivory-200"}`}>
+        <p className={`mt-1.5 text-xs ${state.s === "bad" ? "font-semibold text-red-600" : "text-ivory-200"}`}>
           {state.msg}
         </p>
       )}

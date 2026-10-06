@@ -27,7 +27,7 @@ export default function ImageUpload({ value, onChange, folder = "services", labe
         </div>
         <input ref={ref} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={pick} />
       </div>
-      {err && <p className="mt-1 text-xs font-semibold text-black">{err}</p>}
+      {err && <p className="mt-1 text-xs font-semibold text-red-600">{err}</p>}
     </div>
   );
 }

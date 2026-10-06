@@ -33,7 +33,7 @@ export default function CancelModal({ booking, onClose, onDone }) {
         <p className="text-sm text-ivory-200">Why are you cancelling {booking?.service?.name}? This helps us improve.</p>
         <fieldset className="space-y-2">
           {REASONS.map(([v, l]) => (
-            <label key={v} className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm ${reason === v ? "border-black bg-ink-900" : "border-ink-600"}`}>
+            <label key={v} className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm ${reason === v ? "border-brand-600 bg-brand-50" : "border-ink-600"}`}>
               <input type="radio" name="reason" className="accent-black" checked={reason === v} onChange={() => setReason(v)} />{l}
             </label>
           ))}

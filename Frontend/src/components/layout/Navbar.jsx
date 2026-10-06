@@ -61,30 +61,30 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-ink-700 bg-white/95 backdrop-blur">
-      <div className="container-page flex h-16 items-center gap-6">
-        <Link to="/" className="font-display flex justify-center items-center text-2xl font-extrabold leading-none text-ivory-50">
-          <img src="/img/logo.png" alt="ServiceHome" className="h-10 w-10" />
+      <div className="container-page flex h-16 items-center justify-between gap-3 lg:justify-start lg:gap-6">
+        <Link to="/" className="font-display flex shrink-0 items-center justify-start text-2xl font-extrabold leading-none text-ivory-50">
+          <img src="/img/logo.png" alt="ServiceHome" className="h-11 w-11 object-contain" />
         </Link>
 
         <nav className="relative ml-4 hidden h-full items-center gap-7 lg:flex" aria-label="Primary">
           {SECTIONS.map((s) => (
             <button key={s.id} ref={(el) => (refs.current[s.id] = el)} onClick={() => go(s)}
-              className={`h-full text-sm font-medium transition-colors ${active === s.id ? "text-black" : "text-ivory-200 hover:text-black"}`}>
+              className={`h-full text-sm font-medium transition-colors ${active === s.id ? "text-brand-600" : "text-ivory-200 hover:text-brand-600"}`}>
               {s.label}
             </button>
           ))}
-          <span aria-hidden className="absolute bottom-0 left-0 h-[3px] rounded-full bg-black transition-all duration-500 ease-out"
+          <span aria-hidden className="absolute bottom-0 left-0 h-[3px] rounded-full bg-brand-600 transition-all duration-500 ease-out"
             style={{ width: bar.w, transform: `translateX(${bar.x}px)`, opacity: bar.show ? 1 : 0 }} />
         </nav>
 
-        <div className="ml-auto flex items-center gap-3">
-          <button onClick={loc.openAsk} className="hidden items-center gap-1.5 rounded-full border border-ink-600 px-3 py-1.5 text-xs font-medium hover:border-black sm:flex" title="Change service area">
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+          <button onClick={loc.openAsk} className="hidden items-center gap-1.5 rounded-full border border-ink-600 px-3 py-1.5 text-xs font-medium hover:border-brand-600 sm:flex" title="Change service area">
             <Icon name="pin" size={14} />{loc.pincode ? `${loc.city ? loc.city + " · " : ""}${loc.pincode}` : "Set PIN code"}
           </button>
           {isAuthenticated ? (
             <div className="relative" data-acct>
               <button onClick={() => setAcct((v) => !v)} aria-label="Account menu" aria-expanded={acct}
-                className="grid h-10 w-10 place-items-center rounded-full bg-black text-sm font-semibold text-white">{initials}</button>
+                className="grid h-10 w-10 place-items-center rounded-full bg-brand-600 text-sm font-semibold text-white">{initials}</button>
               {acct && (
                 <div className="fade-up absolute right-0 top-12 w-64 rounded-xl border border-ink-600 bg-white p-2 shadow-xl">
                   <div className="border-b border-ink-700 px-3 pb-3 pt-2">
@@ -110,10 +110,13 @@ export default function Navbar() {
       </div>
 
       {menu && (
-        <div className="fade-up border-t border-ink-700 bg-white px-5 pb-6 pt-3 lg:hidden">
+        <div className="fade-up max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-ink-700 bg-white px-5 pb-6 pt-3 lg:hidden">
           {SECTIONS.map((s) => (
             <button key={s.id} onClick={() => go(s)} className={`block w-full border-b border-ink-700 py-3.5 text-left text-base ${active === s.id ? "font-semibold" : "text-ivory-200"}`}>{s.label}</button>
           ))}
+          <button onClick={() => { setMenu(false); loc.openAsk(); }} className="flex w-full items-center gap-2 border-b border-ink-700 py-3.5 text-left text-base text-ivory-200">
+            <Icon name="pin" size={18} />{loc.pincode ? `${loc.city ? loc.city + " · " : ""}${loc.pincode}` : "Set PIN code"}
+          </button>
           {!isAuthenticated && (
             <div className="mt-4 flex gap-3">
               <Link to="/login" className="btn-ghost flex-1">Log in</Link>
@@ -125,7 +128,7 @@ export default function Navbar() {
 
       <nav aria-label="Mobile" className="fixed inset-x-0 bottom-0 z-40 flex border-t border-ink-700 bg-white pb-[env(safe-area-inset-bottom)] lg:hidden">
         {[["/", "Home", "home"], ["/services", "Services", "search"], isAuthenticated ? ["/bookings", "Bookings", "list"] : ["/login", "Log in", "user"], ...(isAuthenticated ? [["/addresses", "Addresses", "pin"]] : [])].map(([to, l, ic]) => (
-          <Link key={to} to={to} className={`flex-1 py-2 text-center text-[11px] ${pathname === to ? "font-semibold text-black" : "text-ivory-200"}`}>
+          <Link key={to} to={to} className={`flex-1 py-2 text-center text-[11px] ${pathname === to ? "font-semibold text-brand-600" : "text-ivory-200"}`}>
             <Icon name={ic} className="mx-auto mb-0.5" size={21} />{l}
           </Link>
         ))}

@@ -4,17 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Light theme: "ink" tokens are now the light surfaces and
-        // "ivory" tokens are now the dark text colors (names kept as-is
-        // so every existing className in the app still works correctly).
-        ink: { 950: "#ffffff", 900: "#f6f6f6", 800: "#ffffff", 700: "#ebebeb", 600: "#d2d2d2" },
-        ivory: { 50: "#000000", 100: "#111111", 200: "#5c5c5c" },
-        moss: { 400: "#111111", 500: "#000000", 600: "#000000" },
-        clay: { 400: "#111111", 500: "#000000", 600: "#222222" },
-        // Only overriding the shades used as *text* for error states so
-        // they stay readable on the light background; red-500 keeps its
-        // default value since it's only ever used as a low-opacity tint.
-        red: { 300: "#111111", 400: "#111111" },
+        // Colorful trust-focused theme. Token names kept so existing classNames work.
+        ink: { 950: "#f5f8ff", 900: "#eef3ff", 800: "#ffffff", 700: "#e3e9f5", 600: "#c9d3e6" },
+        ivory: { 50: "#0b1b3b", 100: "#1e2b4a", 200: "#5a6784" },
+        brand: { 50: "#eef4ff", 100: "#dbe8ff", 500: "#3b82f6", 600: "#2563eb", 700: "#1d4ed8" },
+        moss: { 400: "#10b981", 500: "#059669", 600: "#047857" },
+        clay: { 400: "#2563eb", 500: "#1d4ed8", 600: "#1e40af" },
+        accent: { 400: "#fbbf24", 500: "#f59e0b", 600: "#d97706" },
       },
       fontFamily: {
         display: ["Manrope", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],

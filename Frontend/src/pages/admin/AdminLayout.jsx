@@ -11,12 +11,12 @@ export default function AdminLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const out = () => { logout(); navigate("/login"); };
-  const link = ({ isActive }) => `flex shrink-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${isActive ? "bg-black text-white" : "text-ivory-200 hover:bg-ink-700 hover:text-black"}`;
+  const link = ({ isActive }) => `flex shrink-0 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${isActive ? "bg-brand-600 text-white" : "text-ivory-200 hover:bg-ink-700 hover:text-brand-600"}`;
   return (
     <div className="min-h-screen bg-ink-900 lg:flex">
       <aside className="border-b border-ink-700 bg-white lg:sticky lg:top-0 lg:h-screen lg:w-60 lg:shrink-0 lg:border-b-0 lg:border-r">
         <div className="flex items-center justify-between px-4 py-3 lg:block lg:px-5 lg:py-6">
-          <div><span className="font-display text-2xl">ServiceHome</span><span className="ml-2 rounded bg-black px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">Admin</span></div>
+          <div><span className="font-display text-2xl">ServiceHome</span><span className="ml-2 rounded bg-brand-600 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">Admin</span></div>
           <button onClick={out} className="text-sm font-semibold underline lg:hidden">Log out</button>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:px-3" aria-label="Admin">

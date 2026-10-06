@@ -16,7 +16,7 @@ export function useFlash() {
   const [msg, setMsg] = useState("");
   const flash = useCallback((m) => { setMsg(m); setTimeout(() => setMsg(""), 2600); }, []);
   const node = msg ? (
-    <div role="status" className="fade-up fixed right-4 top-4 z-[90] flex items-center gap-2 rounded-xl bg-black px-4 py-3 text-sm text-white shadow-xl"><Icon name="check" size={16} />{msg}</div>
+    <div role="status" className="fade-up fixed right-4 top-4 z-[90] flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm text-white shadow-xl"><Icon name="check" size={16} />{msg}</div>
   ) : null;
   return [node, flash];
 }
@@ -24,7 +24,7 @@ export function useFlash() {
 export const Empty = ({ children }) => <div className="rounded-xl border border-dashed border-ink-600 p-10 text-center text-sm text-ivory-200">{children}</div>;
 
 export const Chip = ({ children, on }) => (
-  <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-semibold ${on === false ? "border-ink-600 text-ivory-200 line-through" : "border-black"}`}>{children}</span>
+  <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-semibold ${on === false ? "border-ink-600 text-ivory-200 line-through" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{children}</span>
 );
 
 export const IconBtn = ({ icon, label, onClick, disabled }) => (

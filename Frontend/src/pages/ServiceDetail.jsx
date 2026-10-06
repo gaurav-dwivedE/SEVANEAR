@@ -49,7 +49,7 @@ export default function ServiceDetail() {
           {serviceImages(service).length > 1 && (
             <div className="mt-3 flex gap-2 overflow-x-auto">
               {serviceImages(service).map((u, i) => (
-                <button key={u} onClick={() => setShot(i)} aria-label={`Show photo ${i + 1}`} className={`h-16 w-20 shrink-0 overflow-hidden rounded-lg border-2 ${i === shot ? "border-black" : "border-transparent opacity-70 hover:opacity-100"}`}>
+                <button key={u} onClick={() => setShot(i)} aria-label={`Show photo ${i + 1}`} className={`h-16 w-20 shrink-0 overflow-hidden rounded-lg border-2 ${i === shot ? "border-brand-600" : "border-transparent opacity-70 hover:opacity-100"}`}>
                   <img src={u} alt="" className="h-full w-full object-cover" />
                 </button>
               ))}
@@ -63,7 +63,7 @@ export default function ServiceDetail() {
           <p className="mt-4 text-ivory-200">{service.description}</p>
           <ul className="mt-5 grid gap-2 sm:grid-cols-2">
             {(service.inclusions || []).map((i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-ivory-100"><Icon name="check" size={16} className="shrink-0 text-black" />{i}</li>
+              <li key={i} className="flex items-center gap-2 text-sm text-ivory-100"><Icon name="check" size={16} className="shrink-0 text-brand-600" />{i}</li>
             ))}
           </ul>
           <div className="card-surface mt-6 p-5">
@@ -73,7 +73,7 @@ export default function ServiceDetail() {
             <p className="mt-3 text-xs text-ivory-200">Parts, if needed, are quoted before any work starts. Free cancellation until the partner is on the way.</p>
           </div>
           {pincode && service.availableAtPincode === false ? (
-            <div className="mt-5 rounded-xl border border-black p-4 text-sm">
+            <div className="mt-5 rounded-xl border border-brand-600 p-4 text-sm">
               <b>Not available at {pincode} yet.</b> We have no active partner for this service in your area.{" "}
               <button className="font-semibold underline" onClick={openAsk}>Change PIN code</button>
             </div>

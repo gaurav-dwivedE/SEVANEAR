@@ -15,7 +15,7 @@ export default function Modal({ open, onClose, title, children, wide = false }) 
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0 bg-slate-900/50" onClick={onClose} />
       <div className={`fade-up relative max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-white p-5 shadow-2xl sm:rounded-xl sm:p-7 ${wide ? "sm:max-w-2xl" : "sm:max-w-md"}`}>
         <div className="mb-5 flex items-center justify-between">
           <h3 className="font-display text-2xl text-ivory-50">{title}</h3>

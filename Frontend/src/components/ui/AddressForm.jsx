@@ -35,7 +35,7 @@ export default function AddressForm({ initial, defaultName = "", defaultPin = ""
     <form onSubmit={submit} className="space-y-3">
       <div className="flex gap-2">
         {["Home", "Work", "Other"].map((l) => (
-          <button type="button" key={l} onClick={() => set("label", l)} className={`rounded-full border px-4 py-1.5 text-sm ${f.label === l ? "border-black bg-black text-white" : "border-ink-600"}`}>{l}</button>
+          <button type="button" key={l} onClick={() => set("label", l)} className={`rounded-full border px-4 py-1.5 text-sm ${f.label === l ? "border-brand-600 bg-brand-600 text-white" : "border-ink-600"}`}>{l}</button>
         ))}
       </div>
       <div className="grid gap-3 sm:grid-cols-2">

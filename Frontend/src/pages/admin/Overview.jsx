@@ -22,7 +22,7 @@ export default function Overview() {
       <PageHead title="Overview" sub="What needs your attention today." />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         {cards.map(([l, n, to]) => (
-          <Link key={l} to={`/admin/${to}`} className="rounded-xl border border-ink-700 bg-white p-4 hover:border-black"><p className="font-display text-4xl">{n}</p><p className="text-sm text-ivory-200">{l}</p></Link>
+          <Link key={l} to={`/admin/${to}`} className="rounded-xl border border-ink-700 bg-white p-4 hover:border-brand-600"><p className="font-display text-4xl">{n}</p><p className="text-sm text-ivory-200">{l}</p></Link>
         ))}
       </div>
       <h2 className="mb-3 mt-10 text-2xl">Waiting for confirmation</h2>

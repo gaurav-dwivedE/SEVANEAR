@@ -31,7 +31,7 @@ export default function Calendar({ value, onChange, maxDays = 45 }) {
           const sel = value === iso(d);
           return (
             <button type="button" key={i} disabled={off} onClick={() => onChange(iso(d))} aria-pressed={sel}
-              className={`aspect-square rounded-lg text-sm ${sel ? "bg-black font-semibold text-white" : off ? "text-ivory-200/40" : "hover:bg-ink-700"} ${iso(d) === iso(today) && !sel ? "ring-1 ring-black" : ""}`}>
+              className={`aspect-square rounded-lg text-sm ${sel ? "bg-brand-600 font-semibold text-white" : off ? "text-ivory-200/40" : "hover:bg-ink-700"} ${iso(d) === iso(today) && !sel ? "ring-1 ring-brand-600" : ""}`}>
               {d.getDate()}
             </button>
           );

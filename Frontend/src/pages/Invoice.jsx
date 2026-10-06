@@ -20,7 +20,7 @@ export default function Invoice() {
   return (
     <div className="container-page max-w-3xl py-8">
       <div className="no-print mb-4 flex items-center justify-between">
-        <Link to="/bookings" className="inline-flex items-center gap-1 text-sm text-ivory-200 hover:text-black"><Icon name="left" size={16} /> My bookings</Link>
+        <Link to="/bookings" className="inline-flex items-center gap-1 text-sm text-ivory-200 hover:text-brand-600"><Icon name="left" size={16} /> My bookings</Link>
         <button className="btn-ghost !py-2" onClick={() => window.print()}>Print / Save as PDF</button>
       </div>
       <div className="rounded-xl border border-ink-600 bg-white p-6 md:p-10">
@@ -45,7 +45,7 @@ export default function Invoice() {
         </div>
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
-          <span className={`rounded-full border px-3 py-1 font-semibold ${inv.paymentStatus === "paid" ? "border-black bg-black text-white" : "border-black"}`}>{inv.paymentStatus === "paid" ? `Paid${inv.paidAt ? " on " + fmtDate(inv.paidAt) : ""}` : "Payment due after the job"}</span>
+          <span className={`rounded-full border px-3 py-1 font-semibold ${inv.paymentStatus === "paid" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>{inv.paymentStatus === "paid" ? `Paid${inv.paidAt ? " on " + fmtDate(inv.paidAt) : ""}` : "Payment due after the job"}</span>
           <span className="text-ivory-200">{inv.isFinal ? "Thank you for choosing ServiceHome." : "Final amount is confirmed once the job is done. Parts or extra work are added only with your approval."}</span>
         </div>
       </div>

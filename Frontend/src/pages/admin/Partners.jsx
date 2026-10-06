@@ -68,7 +68,7 @@ export default function Partners() {
         <div className="grid gap-3 lg:grid-cols-2">
           {shown.map((p) => (
             <div key={p._id} className="flex gap-4 rounded-xl border border-ink-700 bg-white p-4">
-              <div className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full bg-black text-lg text-white">{p.image ? <img src={p.image} alt="" className="h-full w-full object-cover" /> : p.name[0]}</div>
+              <div className="grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full bg-brand-600 text-lg text-white">{p.image ? <img src={p.image} alt="" className="h-full w-full object-cover" /> : p.name[0]}</div>
               <div className="min-w-0 flex-1 text-sm">
                 <b>{p.name}</b> {!p.isActive && <Chip on={false}>Inactive</Chip>}
                 <p className="text-ivory-200">{p.phone}{p.location?.city ? ` · ${p.location.city}` : ""}</p>
@@ -91,7 +91,7 @@ export default function Partners() {
             </div>
             <div>
               <label className="label-field">Services offered *</label>
-              <div className="flex flex-wrap gap-2">{services.map((s) => <button type="button" key={s._id} onClick={() => toggleSvc(s._id)} className={`rounded-full border px-3 py-1 text-sm ${form.service.includes(s._id) ? "border-black bg-black text-white" : "border-ink-600"}`}>{s.name}</button>)}</div>
+              <div className="flex flex-wrap gap-2">{services.map((s) => <button type="button" key={s._id} onClick={() => toggleSvc(s._id)} className={`rounded-full border px-3 py-1 text-sm ${form.service.includes(s._id) ? "border-brand-600 bg-brand-600 text-white" : "border-ink-600"}`}>{s.name}</button>)}</div>
             </div>
             <div className="grid gap-3 sm:grid-cols-[150px_1fr]">
               <PincodeField label="Home PIN code" value={form.location.pincode} onChange={(v) => setLoc("pincode", v)} onVerified={locVerified} />
@@ -102,7 +102,7 @@ export default function Partners() {
               <label className="label-field">Service-area PIN codes *</label>
               <div className="mb-2 flex flex-wrap gap-1.5">
                 {form.serviceablePincodes.map((x) => (
-                  <span key={x} className="inline-flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs text-white">{x}<button type="button" aria-label={`Remove ${x}`} onClick={() => set("serviceablePincodes", form.serviceablePincodes.filter((y) => y !== x))}><Icon name="x" size={12} /></button></span>
+                  <span key={x} className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-3 py-1 text-xs text-white">{x}<button type="button" aria-label={`Remove ${x}`} onClick={() => set("serviceablePincodes", form.serviceablePincodes.filter((y) => y !== x))}><Icon name="x" size={12} /></button></span>
                 ))}
                 {!form.serviceablePincodes.length && <span className="text-xs text-ivory-200">Add every PIN code this partner can reach.</span>}
               </div>

@@ -18,7 +18,7 @@ function Charges({ b, onSave }) {
   return (
     <div className="space-y-2 text-sm">
       {rows.map((r, i) => (
-        <div key={i} className="flex items-center justify-between rounded-lg bg-ink-900 px-3 py-2"><span>{r.label}</span><span className="flex items-center gap-3">{r.amount < 0 ? `− ${rupee(-r.amount)}` : rupee(r.amount)}<button className="text-ivory-200 hover:text-black" aria-label="Remove charge" onClick={() => setRows(rows.filter((_, j) => j !== i))}>✕</button></span></div>
+        <div key={i} className="flex items-center justify-between rounded-lg bg-ink-900 px-3 py-2"><span>{r.label}</span><span className="flex items-center gap-3">{r.amount < 0 ? `− ${rupee(-r.amount)}` : rupee(r.amount)}<button className="text-ivory-200 hover:text-brand-600" aria-label="Remove charge" onClick={() => setRows(rows.filter((_, j) => j !== i))}>✕</button></span></div>
       ))}
       <div className="flex gap-2">
         <input className="input-field !py-2" placeholder="e.g. Capacitor replaced" value={label} onChange={(e) => setLabel(e.target.value)} />
@@ -102,7 +102,7 @@ export default function Bookings() {
                     </td>
                     <td className="px-4 py-3">
                       {b.status === "cancelled" && b.cancelledBy === "user" && (
-                        <div className="mb-2 rounded-lg border border-black px-2.5 py-1.5 text-xs"><b>Cancelled by customer</b>{b.cancelReason && <p className="mt-0.5 text-ivory-200">{b.cancelReason}</p>}</div>
+                        <div className="mb-2 rounded-lg border border-brand-600 px-2.5 py-1.5 text-xs"><b>Cancelled by customer</b>{b.cancelReason && <p className="mt-0.5 text-ivory-200">{b.cancelReason}</p>}</div>
                       )}
                       <select className="input-field !py-2 text-sm" value={b.status} onChange={(e) => patch(b._id, { status: e.target.value }, "Status updated")} aria-label="Status">
                         {STATUSES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}

@@ -7,7 +7,7 @@ const cols = [
 
 export default function Footer() {
   return (
-    <footer className="bg-black pb-24 pt-14 text-white lg:pb-10">
+    <footer className="bg-gradient-to-br from-[#0b1b3b] to-[#13306b] pb-24 pt-14 text-white lg:pb-10">
       <div className="container-page">
         <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1.4fr]">
           <div>

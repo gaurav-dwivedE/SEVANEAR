@@ -1,10 +1,10 @@
 export const STATUS_META = {
-  pending: { label: "Requested", cls: "border-dashed border-ivory-200 text-ivory-100" },
-  approved: { label: "Confirmed", cls: "border-black text-black" },
-  in_progress: { label: "In progress", cls: "border-black bg-black text-white" },
-  completed: { label: "Completed", cls: "border-ink-600 bg-ink-700 text-black" },
-  rejected: { label: "Declined", cls: "border-ink-600 text-ivory-200 line-through" },
-  cancelled: { label: "Cancelled", cls: "border-ink-600 text-ivory-200 line-through" },
+  pending: { label: "Requested", cls: "border-amber-200 bg-amber-50 text-amber-700" },
+  approved: { label: "Confirmed", cls: "border-brand-100 bg-brand-50 text-brand-700" },
+  in_progress: { label: "In progress", cls: "border-violet-200 bg-violet-50 text-violet-700" },
+  completed: { label: "Completed", cls: "border-emerald-200 bg-emerald-50 text-emerald-700" },
+  rejected: { label: "Declined", cls: "border-red-200 bg-red-50 text-red-700" },
+  cancelled: { label: "Cancelled", cls: "border-slate-200 bg-slate-100 text-slate-500" },
 };
 
 export default function StatusBadge({ status }) {

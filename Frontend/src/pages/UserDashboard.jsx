@@ -22,7 +22,7 @@ function Timeline({ status }) {
   return (
     <ol className="mt-4 grid grid-cols-4 gap-1 text-[11px] text-ivory-200">
       {FLOW_LABEL.map((l, i) => (
-        <li key={l}><div className={`mb-1 h-1 rounded-full ${i <= at ? "bg-black" : "bg-ink-700"}`} /><span className={i === at ? "font-semibold text-ivory-50" : ""}>{l}</span></li>
+        <li key={l}><div className={`mb-1 h-1 rounded-full ${i <= at ? "bg-brand-600" : "bg-ink-700"}`} /><span className={i === at ? "font-semibold text-ivory-50" : ""}>{l}</span></li>
       ))}
     </ol>
   );
@@ -34,7 +34,7 @@ function Booking({ app, onCancel, onReview, onDelete }) {
   return (
     <article className="overflow-hidden rounded-xl border border-ink-700 bg-white">
       {done && (
-        <div className="flex items-center gap-2 border-b border-ink-700 bg-black px-4 py-2 text-sm font-medium text-white">
+        <div className="flex items-center gap-2 border-b border-ink-700 bg-brand-600 px-4 py-2 text-sm font-medium text-white">
           <Icon name="check" size={16} /> Job completed{app.paymentStatus === "paid" || app.invoice?.paymentStatus === "paid" ? " · Paid" : ""}
         </div>
       )}
@@ -99,13 +99,13 @@ export default function UserDashboard() {
       </div>
       <div className="mt-6 flex gap-2 overflow-x-auto">
         {FILTERS.map(([k, l]) => (
-          <button key={k} onClick={() => setFilter(k)} className={`shrink-0 rounded-full border px-4 py-1.5 text-sm ${filter === k ? "border-black bg-black text-white" : "border-ink-600 hover:border-black"}`}>{l} {apps ? <span className="opacity-60">{count(k)}</span> : null}</button>
+          <button key={k} onClick={() => setFilter(k)} className={`shrink-0 rounded-full border px-4 py-1.5 text-sm ${filter === k ? "border-brand-600 bg-brand-600 text-white" : "border-ink-600 hover:border-brand-600"}`}>{l} {apps ? <span className="opacity-60">{count(k)}</span> : null}</button>
         ))}
       </div>
       <FormMessage>{err}</FormMessage>
       <div className="mt-4 space-y-4">
         {!apps && <div className="skeleton h-40" />}
-        {apps && !list.length && <div className="rounded-xl border border-dashed border-ink-600 p-10 text-center text-ivory-200">Nothing here yet. <Link to="/#services" className="font-semibold text-black underline">Find a service</Link></div>}
+        {apps && !list.length && <div className="rounded-xl border border-dashed border-ink-600 p-10 text-center text-ivory-200">Nothing here yet. <Link to="/#services" className="font-semibold text-brand-600 underline">Find a service</Link></div>}
         {list.map((a) => <Booking key={a._id} app={a} onCancel={setCancel} onReview={setReview} onDelete={setDel} />)}
       </div>
       {cancel && <CancelModal booking={cancel} onClose={() => setCancel(null)} onDone={() => { setCancel(null); load(); }} />}

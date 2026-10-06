@@ -32,7 +32,7 @@ export default function AvailabilityChecker() {
             <>
               <p className="font-semibold">Good news. {res.services.length} service{res.services.length > 1 ? "s are" : " is"} available in {res.info.city} ({res.pin}).</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {res.services.map((s) => <Link key={s._id} to={`/services/${s._id}`} className="rounded-full bg-ink-700 px-3 py-1 text-sm hover:bg-black hover:text-white">{s.name}</Link>)}
+                {res.services.map((s) => <Link key={s._id} to={`/services/${s._id}`} className="rounded-full bg-ink-700 px-3 py-1 text-sm hover:bg-brand-600 hover:text-white">{s.name}</Link>)}
               </div>
               <button className="mt-3 text-sm underline underline-offset-4" onClick={() => save(res.pin)}>Use {res.pin} as my area</button>
             </>
